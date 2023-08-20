@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-server
+spec:
+  ports:
+  - port: 8081
+    targetPort: 7893
+  selector:
+    app: test-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-server
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: test-server
+  template:
+    metadata:
+      labels:
+        app: test-server
+    spec:
+      containers:
+      - image: test-server:1.0.0
+        name: test-server
+        ports:
+        - containerPort: 7893
